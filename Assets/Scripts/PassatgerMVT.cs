@@ -23,6 +23,11 @@ public class PassatgerMVT : MonoBehaviour {
 	private float porta_dec_x;
 	private float porta_dec_z;
 
+	private AvoMVT avio_id;
+
+	public bool papers_en_regla; //True si te papers en regla. False si no.
+	public int rate_papers_regla = 99; //% de gent que te els papers en regla
+
 	public int estat = 0;
 	//Estats:
 	//0 -> anant cap a la seva guixeta
@@ -32,6 +37,7 @@ public class PassatgerMVT : MonoBehaviour {
 	//4 -> esta sent ates per l'encarregat de la guixeta
 	//5 -> Traspassar la guixeta
 	//6 -> Anar a la porta d'embarcament
+	//7 -> Esperar a que l'avio arribi a la porta d'embarcament i quan hi sigui i ho permeti, pujar-hi
 
 	void Start () {
 
@@ -44,6 +50,9 @@ public class PassatgerMVT : MonoBehaviour {
 		porta_id = GameObject.Find("Porta (" + porta_numero.ToString() + ")").GetComponent<ControlPorta>();
 		porta_dec_x = Random.Range(-10, 10);
 		porta_dec_z = Random.Range(-10, 10);
+
+		papers_en_regla = true;
+		if (Random.Range(0,100) > rate_papers_regla) { papers_en_regla = false; }
 
 
 	}
@@ -93,7 +102,20 @@ public class PassatgerMVT : MonoBehaviour {
 		if (estat == 4) //Sent ates per l'encarregat de la guixeta
 		{
 			temps_atenent += Time.deltaTime;
-			if (temps_atenent > guixeta_id.temps_atencio) { guixeta_id.redueix_cua(); estat = 5; }
+			if (temps_atenent > guixeta_id.temps_atencio)
+			{
+				guixeta_id.redueix_cua();
+
+				if (papers_en_regla)
+				{
+					estat = 5;
+				}
+				else
+				{
+					estat = -1;
+				}
+							
+			}
 		}
 		else
 		if (estat == 5) //Traspassar la guixeta
@@ -120,10 +142,38 @@ public class PassatgerMVT : MonoBehaviour {
 			}
 		}
 		else
-		if (estat == 6)
+		if (estat == 6) //Anar fins a la porta d'embarcament
 		{
 			//transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.z + Time.deltaTime*speed);
 			anar_a_la_porta();
+			Vector3 porta_pos = porta_id.transform.position;
+			Vector3 posicio_aparcar = new Vector3(porta_pos.x + porta_dec_x, transform.position.y, porta_pos.z + porta_dec_z);
+			if (Vector3.Distance(transform.position, posicio_aparcar) < 1) { estat = 7; }
+		}
+		else
+		if (estat == 7) //Esperar a que arribi el seu avio i despres pujar-hi quan ho permeti
+		{
+			if (porta_id.hi_ha_avio)
+			{
+				avio_id = porta_id.avio;
+				anar_a_lavio();
+				if (Vector3.Distance(transform.position, avio_id.transform.position) < 1) { Destroy(gameObject); }
+			}
+		}
+		else
+		if (estat == -1)
+		{
+			if (esquiva_guixeta_x > 0)
+			{
+				float ttt = Time.deltaTime*speed;
+				esquiva_guixeta_x -= ttt;
+				transform.position = new Vector3 (transform.position.x + ttt, transform.position.y, transform.position.z);
+			}
+			else
+			{
+				transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.z - Time.deltaTime*speed);
+				if (transform.position.z < -41) { Destroy(gameObject); }
+			}
 		}
 
 	}
@@ -157,6 +207,18 @@ public class PassatgerMVT : MonoBehaviour {
 		if (porta_pos.x + porta_dec_x > my_pos.x) { my_pos = new Vector3(my_pos.x + speed*Time.deltaTime, my_pos.y, my_pos.z); }
 		if (porta_pos.z + porta_dec_z < my_pos.z) { my_pos = new Vector3(my_pos.x, my_pos.y, my_pos.z - speed*Time.deltaTime); }
 		if (porta_pos.z + porta_dec_z > my_pos.z) { my_pos = new Vector3(my_pos.x, my_pos.y, my_pos.z + speed*Time.deltaTime); }
+		transform.position = my_pos;
+	}
+
+	void anar_a_lavio()
+	{
+		Vector3 avio_pos = avio_id.transform.position;
+		Vector3 my_pos = transform.position;
+
+		if (avio_pos.x < my_pos.x) { my_pos = new Vector3(my_pos.x - speed*Time.deltaTime, my_pos.y, my_pos.z); }
+		if (avio_pos.x > my_pos.x) { my_pos = new Vector3(my_pos.x + speed*Time.deltaTime, my_pos.y, my_pos.z); }
+		if (avio_pos.z < my_pos.z) { my_pos = new Vector3(my_pos.x, my_pos.y, my_pos.z - speed*Time.deltaTime); }
+		if (avio_pos.z > my_pos.z) { my_pos = new Vector3(my_pos.x, my_pos.y, my_pos.z + speed*Time.deltaTime); }
 		transform.position = my_pos;
 	}
 

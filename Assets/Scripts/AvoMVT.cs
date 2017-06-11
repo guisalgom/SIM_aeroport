@@ -52,7 +52,26 @@ public class AvoMVT : MonoBehaviour {
         }
         else if (estat == 1) {
             anar_a_la_porta();
+			Vector3 porta_pos = porta_id.transform.position;
+			Vector3 posicio_aparcar = new Vector3(porta_pos.x + porta_dec_x, transform.position.y, porta_pos.z + porta_dec_z);
+			if (Vector3.Distance(transform.position, posicio_aparcar) < 1)
+			{
+				porta_id.pujar_passatgers(this);
+				estat = 2;
+			}
+
         }
+
+		///////////////////
+		/// ///////////////
+		/// LA FUNCIO PUJAR_PASSATGERS() porta_id.pujar_passatgers(this); ES CRIDA QUAN L'AVIO ESTIGUI LLEST PER QUE LA GENT HI PUJI
+		/// LA IDEA ES QUE UN COP L'AVIO ARRIBI A LA PORTA D'EMBARCAMENT ESPERI UNA ESTONA ABANS D'ACEPTAR GENT.
+		/// 
+		/// 
+		/// QUAN L'AVIO JA NO ADMETI MES PASSATGERS HA DE CRIDAR LA FUNCIO TANCAR_PORTA() porta_id.tancar_porta(); PER QUE LA GENT DEIXI DE PUJAR.
+		/// LA IDEA ES QUE TANQUI LA PORTA I DESPRES VAGI A LA PISTA D'ENLAIRAMENT
+		/// ///////////////
+		/// ///////////////
        
 	}
 
