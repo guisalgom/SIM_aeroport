@@ -30,7 +30,7 @@ public class CreaAvions : MonoBehaviour {
     }
 
     void make_avions() {
-        GameObject myRoadInstance = Instantiate(avio, new Vector3(Random.Range(130f, 9f), 2.5f, 188), Quaternion.identity) as GameObject;
+        GameObject myRoadInstance = Instantiate(avio, new Vector3(170f, 2.5f, 192), Quaternion.identity) as GameObject;
     }
 
     bool comprova_disponibilitat() {
