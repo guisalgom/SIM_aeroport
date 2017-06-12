@@ -33,7 +33,7 @@ public class CreaPassatgers : MonoBehaviour {
 
 		for(int i = 0; i < quantitat; i++)
 		{
-			GameObject myRoadInstance = Instantiate(passatger, new Vector3(Random.Range(1.5f, 30.5f), 1, -40), Quaternion.identity) as GameObject;
+			GameObject myRoadInstance = Instantiate(passatger, new Vector3(Random.Range(1.5f, 30.5f), 1.5f, -40), Quaternion.identity) as GameObject;
 		}
 	}
 }
