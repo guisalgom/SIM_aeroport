@@ -6,10 +6,12 @@ public class ControlPorta : MonoBehaviour {
 
 	public bool hi_ha_avio; //Hi ha un avio al davant de la porta esperant a que pugin passatgers, o no
 	public AvoMVT avio;
+	public int npersones;
 
 	// Use this for initialization
 	void Start () {
 		hi_ha_avio = false;
+		npersones = 0;
 	}
 	
 	// Update is called once per frame
@@ -26,5 +28,20 @@ public class ControlPorta : MonoBehaviour {
 	public void tancar_porta()
 	{
 		hi_ha_avio = false;
+	}
+
+	public void incrementar_persones()
+	{
+		npersones++;
+	}
+
+	public void decrementar_persones()
+	{
+		npersones--;
+	}
+
+	public int consultar_persones()
+	{
+		return npersones;
 	}
 }

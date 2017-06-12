@@ -26,7 +26,7 @@ public class PassatgerMVT : MonoBehaviour {
 	private AvoMVT avio_id;
 
 	public bool papers_en_regla; //True si te papers en regla. False si no.
-	public int rate_papers_regla = 99; //% de gent que te els papers en regla
+	public int rate_papers_regla; //% de gent que te els papers en regla
 
 	public int estat = 0;
 	//Estats:
@@ -40,6 +40,8 @@ public class PassatgerMVT : MonoBehaviour {
 	//7 -> Esperar a que l'avio arribi a la porta d'embarcament i quan hi sigui i ho permeti, pujar-hi
 
 	void Start () {
+
+		rate_papers_regla = GameObject.Find("ControlGlobal").GetComponent<CreaPassatgers>().rate_papers_regla;
 
 		guixeta_numero = Mathf.RoundToInt(Random.Range(1, 22));
 		guixeta_id = GameObject.Find("Guixeta (" + guixeta_numero.ToString() + ")").GetComponent<ControlGuixeta>();
@@ -148,7 +150,7 @@ public class PassatgerMVT : MonoBehaviour {
 			anar_a_la_porta();
 			Vector3 porta_pos = porta_id.transform.position;
 			Vector3 posicio_aparcar = new Vector3(porta_pos.x + porta_dec_x, transform.position.y, porta_pos.z + porta_dec_z);
-			if (Vector3.Distance(transform.position, posicio_aparcar) < 1) { estat = 7; }
+			if (Vector3.Distance(transform.position, posicio_aparcar) < 1) { estat = 7; porta_id.incrementar_persones(); }
 		}
 		else
 		if (estat == 7) //Esperar a que arribi el seu avio i despres pujar-hi quan ho permeti
@@ -159,6 +161,7 @@ public class PassatgerMVT : MonoBehaviour {
 				anar_a_lavio();
 				if (Vector3.Distance(transform.position, avio_id.transform.position) < 1) {
                     avio_id.GetComponent<AvoMVT>().sumar_passatger();
+					porta_id.decrementar_persones();
                     Destroy(gameObject);
                 }
 			}

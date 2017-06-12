@@ -54,6 +54,8 @@
      <Compile Include="Assets\Scripts\CreaPassatgers.cs" />
      <Compile Include="Assets\Scripts\MoveCam.cs" />
      <Compile Include="Assets\Scripts\PassatgerMVT.cs" />
+     <Compile Include="Assets\Scripts\ReservesPista.cs" />
+     <Compile Include="Assets\Scripts\TimeCTRL.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

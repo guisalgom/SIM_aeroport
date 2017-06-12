@@ -32,31 +32,31 @@ public class MoveCam : MonoBehaviour {
 
 	public void BLeft()
 	{
-		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - Time.deltaTime*vel);
+		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - Time.deltaTime*vel/Time.timeScale);
 	}
 
 	public void BRight()
 	{
-		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + Time.deltaTime*vel);
+		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + Time.deltaTime*vel/Time.timeScale);
 	}
 
 	public void BUp()
 	{
-		transform.position = new Vector3(transform.position.x - Time.deltaTime*vel, transform.position.y, transform.position.z);
+		transform.position = new Vector3(transform.position.x - Time.deltaTime*vel/Time.timeScale, transform.position.y, transform.position.z);
 	}
 
 	public void BDown()
 	{
-		transform.position = new Vector3(transform.position.x + Time.deltaTime*vel, transform.position.y, transform.position.z);
+		transform.position = new Vector3(transform.position.x + Time.deltaTime*vel/Time.timeScale, transform.position.y, transform.position.z);
 	}
 
 	public void BQ()
 	{
-		transform.position = new Vector3(transform.position.x, transform.position.y - Time.deltaTime*vel, transform.position.z);
+		transform.position = new Vector3(transform.position.x, transform.position.y - Time.deltaTime*vel/Time.timeScale, transform.position.z);
 	}
 
 	public void BW()
 	{
-		transform.position = new Vector3(transform.position.x, transform.position.y + Time.deltaTime*vel, transform.position.z);
+		transform.position = new Vector3(transform.position.x, transform.position.y + Time.deltaTime*vel/Time.timeScale, transform.position.z);
 	}
 }

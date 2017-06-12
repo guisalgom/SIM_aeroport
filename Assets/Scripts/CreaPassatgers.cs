@@ -8,6 +8,10 @@ public class CreaPassatgers : MonoBehaviour {
 	public int quantitat = 4;
 	private float temps;
 	private Object passatger;
+	public int temps_atenciog = 2;
+
+	private TimeCTRL timectrl;
+	public int rate_papers_regla = 99;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +19,7 @@ public class CreaPassatgers : MonoBehaviour {
 		temps = 0;
 
 		passatger = Resources.Load("obj_Passatger");
+		timectrl = GameObject.Find("Canvas").GetComponent<TimeCTRL>();
 
 
 
@@ -23,7 +28,10 @@ public class CreaPassatgers : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		temps += Time.deltaTime;
+
+		if (timectrl.get_aeroport_obert()) { temps += Time.deltaTime; }
+		else { temps = 0; }
+
 		if (temps > frequencia) { make_passatgers(); temps = 0; }
 
 	}
