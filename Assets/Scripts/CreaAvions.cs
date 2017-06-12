@@ -25,7 +25,7 @@ public class CreaAvions : MonoBehaviour {
 	void Update () {
 
         temps += Time.deltaTime;
-        if (temps > frequencia) { make_avions(); temps = 0; }
+        if (temps > frequencia & comprova_disponibilitat()) { make_avions(); temps = 0; }
 
     }
 

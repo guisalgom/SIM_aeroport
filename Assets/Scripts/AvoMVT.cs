@@ -21,6 +21,7 @@ public class AvoMVT : MonoBehaviour {
     private float hangar_dec_z;
     public float speed = 10f;
     public int estat = 0;
+    public int passatgers;
 
     // Use this for initialization
     void Start () {
@@ -30,6 +31,7 @@ public class AvoMVT : MonoBehaviour {
         hangar = GameObject.FindGameObjectWithTag("Hangar");
 
         temps = 0;
+        passatgers = 0;
         temps_manteniment_min = 5f;
         temps_manteniment_max = 10f;
         temps_manteniment = Random.Range(temps_manteniment_min, temps_manteniment_max+1);
@@ -42,8 +44,8 @@ public class AvoMVT : MonoBehaviour {
         print("estat " + estat);
         if(estat == 0) { //Anar a Manteniment
             
-            manteniment_dec_x = Random.Range(-30, 30);
-            manteniment_dec_z = Random.Range(-30, 30);
+            manteniment_dec_x = Random.Range(-15, 15);
+            manteniment_dec_z = Random.Range(-15, 15);
             anar_a_manteniment();
             
         }
@@ -55,8 +57,8 @@ public class AvoMVT : MonoBehaviour {
 
         else if (estat == 2) { //Anar a Hangar
 
-            hangar_dec_x = Random.Range(-50,50);
-            hangar_dec_z = Random.Range(-5, 50);
+            hangar_dec_x = Random.Range(-15, 15);
+            hangar_dec_z = Random.Range(-15, 15);
             anar_a_hangar();
         }
 
@@ -83,13 +85,21 @@ public class AvoMVT : MonoBehaviour {
             anar_a_la_porta();
 			Vector3 porta_pos = porta_id.transform.position;
 			Vector3 posicio_aparcar = new Vector3(porta_pos.x + porta_dec_x, transform.position.y, porta_pos.z + porta_dec_z);
-			if (Vector3.Distance(transform.position, posicio_aparcar) < 1)
-			{
+			if (Vector3.Distance(transform.position, posicio_aparcar) < 1) {
 				porta_id.pujar_passatgers(this);
-				//estat = 5;
-			}
+                if (passatgers >= 150) {
+                    porta_id.tancar_porta();
+                    estat = 5;
+                }
+            }
 
         }
+
+        else if (estat == 5) { //Buscar pista
+
+        }
+
+       
 
 		///////////////////
 		/// ///////////////
@@ -131,7 +141,7 @@ public class AvoMVT : MonoBehaviour {
         transform.position = my_pos;
 
         Vector3 posicio_aparcar = new Vector3(manteniment_pos.x + manteniment_dec_x, transform.position.y, manteniment_pos.z + manteniment_dec_z);
-        if (Vector3.Distance(transform.position, posicio_aparcar) < 1) { estat = 1; }
+        if (Vector3.Distance(transform.position, posicio_aparcar) < 5) { estat = 1; }
     }
 
     void anar_a_hangar() {
@@ -145,6 +155,10 @@ public class AvoMVT : MonoBehaviour {
         transform.position = my_pos;
 
         Vector3 posicio_aparcar = new Vector3(hangar_pos.x + hangar_dec_x, transform.position.y, hangar_pos.z + hangar_dec_z);
-        if (Vector3.Distance(transform.position, posicio_aparcar) < 1) { estat = 3; }
+        if (Vector3.Distance(transform.position, posicio_aparcar) < 5) { estat = 3; }
+    }
+
+    public void sumar_passatger() {
+        passatgers++;
     }
 }

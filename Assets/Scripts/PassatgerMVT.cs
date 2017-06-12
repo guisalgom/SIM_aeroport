@@ -157,7 +157,10 @@ public class PassatgerMVT : MonoBehaviour {
 			{
 				avio_id = porta_id.avio;
 				anar_a_lavio();
-				if (Vector3.Distance(transform.position, avio_id.transform.position) < 1) { Destroy(gameObject); }
+				if (Vector3.Distance(transform.position, avio_id.transform.position) < 1) {
+                    avio_id.GetComponent<AvoMVT>().sumar_passatger();
+                    Destroy(gameObject);
+                }
 			}
 		}
 		else
